@@ -1,5 +1,32 @@
+import { useEffect, useRef, useState } from 'react'
+
+const DESIGN_WIDTH = 1920
+const DESIGN_HEIGHT = 1468
+
 function App() {
+  const wrapperRef = useRef(null)
+  const [scale, setScale] = useState(1)
+
+  useEffect(() => {
+    const updateScale = () => {
+      const width = wrapperRef.current?.clientWidth ?? window.innerWidth
+      setScale(Math.min(width / DESIGN_WIDTH, 1))
+    }
+    updateScale()
+    window.addEventListener('resize', updateScale)
+    return () => window.removeEventListener('resize', updateScale)
+  }, [])
+
   return (
+    <div ref={wrapperRef} style={{ width: '100%', height: DESIGN_HEIGHT * scale, overflow: 'hidden' }}>
+      <div
+        style={{
+          width: DESIGN_WIDTH,
+          height: DESIGN_HEIGHT,
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
+        }}
+      >
 <div
   data-pencil-name="World Cloud"
   className="box-border w-[1920px] h-[1468px] bg-[#f4f7feff] overflow-hidden relative"
@@ -3215,6 +3242,8 @@ function App() {
     </div>
   </div>
 </div>
+      </div>
+    </div>
   )
 }
 
