@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+/*
+ * The original design's text sizes were all authored with an explicit
+ * `line-height: normal` (Pencil/Figma export convention). Tailwind's
+ * preflight otherwise inherits a 1.5 line-height, which makes every
+ * text node taller than the fixed-pixel layout expects and throws off
+ * absolutely-positioned siblings. Scope the correction to the dashboard
+ * canvas so any element that opts into its own `leading-*` utility
+ * (higher specificity) still wins.
+ */
+.dashboard-canvas,
+.dashboard-canvas * {
+  line-height: normal;
+}
